@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { hash } from 'bcryptjs'
-import { prisma } from '../../lib/prisma'
 import { z } from 'zod'
+import { registerUseCase } from '../../use-cases/register'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
@@ -13,25 +12,18 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
   const { nome, email, password } = registerBodySchema.parse(request.body)
 
-  const password_hash = await hash(password, 6)
 
-  const userWithSomeEmail = await prisma.user.findUnique({
-    where: {
+  try {
+    await registerUseCase({
+      nome,
       email,
-    }
-  })
-
-  if (userWithSomeEmail) {
+      password
+    })
+  } catch (err) {
     return reply.status(409).send()
   }
 
-  await prisma.user.create({
-    data: {
-      nome,
-      email,
-      password_hash,
-    },
-  })
+
 
   return reply.status(201).send()
 }
