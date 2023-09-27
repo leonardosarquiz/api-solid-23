@@ -1,9 +1,9 @@
 
 import { expect, describe, it } from 'vitest'
-import { RegisterUseCase } from './register'
+import { RegisterUseCase } from '../register'
 import { compare } from 'bcryptjs'
 import { InMemoryUserRepository } from '@/repositories/in-memory/in-memory-users-repository'
-import { UserAlredyExistsError } from './errors/user-alredy-exists-error'
+import { UserAlredyExistsError } from './user-alredy-exists-error'
 
 
 
