@@ -4,6 +4,8 @@ import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-c
 import { CheckInUseCase } from './checkin'
 import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
 import { Decimal } from '@prisma/client/runtime/library'
+import { MaxDistanceError } from './errors/max-distance-error'
+import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error'
 
 
 
@@ -17,22 +19,22 @@ describe('Check-in Use Case', () => {
   let gymsRepository: InMemoryGymsRepository
   let sut: CheckInUseCase
 
-  beforeEach(() => {
+  beforeEach(async () => {
 
     checkInsRepository = new InMemoryCheckInsRepository()
     gymsRepository = new InMemoryGymsRepository()
     sut = new CheckInUseCase(checkInsRepository, gymsRepository)
 
 
-    gymsRepository.items.push({
+
+
+    await gymsRepository.create({
       id: 'gym-01',
       nome: 'javascript academia',
       description: '',
-      Phone: '',
-      latitude: new Decimal(-29.6737),
-      longitude: new Decimal(-51.1288119),
-
-
+      phone: '',
+      latitude: -29.6737,
+      longitude: -51.1288119,
 
     })
 
@@ -85,7 +87,7 @@ describe('Check-in Use Case', () => {
       userId: 'user-01',
       userLatitude: -29.6737,
       userLongitude: -51.1288119,
-    })).rejects.toBeInstanceOf(Error)
+    })).rejects.toBeInstanceOf(MaxNumberOfCheckInsError)
   })
 
 
@@ -126,7 +128,7 @@ describe('Check-in Use Case', () => {
       id: 'gym-02',
       nome: 'javascript academia',
       description: '',
-      Phone: '',
+      phone: '',
       latitude: new Decimal(-29.6737),
       longitude: new Decimal(-51.1288119),
 
@@ -141,7 +143,7 @@ describe('Check-in Use Case', () => {
       userId: 'user-01',
       userLatitude: -29.6202257,
       userLongitude: -51.2104798,
-    })).rejects.toBeInstanceOf(Error)
+    })).rejects.toBeInstanceOf(MaxDistanceError)
   })
 
 

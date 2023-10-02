@@ -1,46 +1,33 @@
 /* eslint-disable prettier/prettier */
-import { error } from 'console'
-import { prisma } from '../lib/prisma'
-import { hash } from 'bcryptjs'
-import { PrismaUsersRepository } from '../repositories/prisma/prisma-users-repository'
-import { UsersRepository } from '../repositories/users-repository'
-import { UserAlredyExistsError } from './errors/user-alredy-exists-error'
-import { User } from '@prisma/client'
+
+
+import { Gym } from '@prisma/client'
+import { GymsRepository } from '../repositories/gyms-repository'
 
 interface CreateGymUseCaseRequest {
   nome: string
-  email: string
-  password: string
+  description: string | null
+  phone: string | null
+  latitude: number
+  longitude: number
 }
 
 interface CreateGymUseCaseResponse {
-  user: User
+  gym: Gym
 }
 
 export class CreateGymUseCase {
 
-  constructor(private usersRepository: UsersRepository) { }
+  constructor(private gymsRepository: GymsRepository) { }
 
-  async execute({ email, nome, password }: CreateGymUseCaseRequest): Promise<CreateGymUseCaseResponse> {
-    const password_hash = await hash(password, 6)
+  async execute({ nome, phone, longitude, latitude, description }: CreateGymUseCaseRequest): Promise<CreateGymUseCaseResponse> {
 
-    const userWithSomeEmail = await this.usersRepository.findByEmail(email)
-
-    if (userWithSomeEmail) {
-      throw new UserAlredyExistsError()
-    }
-
-
-
-
-    const user = await this.usersRepository.create({
-      nome,
-      email,
-      password_hash
+    const gym = await this.gymsRepository.create({
+      nome, phone, longitude, latitude, description
     })
 
     return {
-      user,
+      gym,
     }
   }
 }

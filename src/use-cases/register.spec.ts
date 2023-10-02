@@ -27,7 +27,7 @@ describe('Register Use Case', () => {
 
 
     const { user } = await sut.execute({
-      nome: 'John Doe',
+      name: 'John Doe',
       email: 'johdoe@gmail.com',
       password: '1234567'
     })
@@ -46,7 +46,7 @@ describe('Register Use Case', () => {
 
 
     const { user } = await sut.execute({
-      nome: 'John Doe',
+      name: 'John Doe',
       email: 'johdoe@gmail.com',
       password: '1234567'
     })
@@ -71,7 +71,7 @@ describe('Register Use Case', () => {
     const email = 'johdoe@gmail.com'
 
     await sut.execute({
-      nome: 'John Doe',
+      name: 'John Doe',
       email,
       password: '1234567'
     }),
@@ -80,7 +80,7 @@ describe('Register Use Case', () => {
 
       await expect(() =>
         sut.execute({
-          nome: 'John Doe',
+          name: 'John Doe',
           email,
           password: '1234567'
         })).rejects.toBeInstanceOf(UserAlredyExistsError)

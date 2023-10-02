@@ -33,7 +33,7 @@ describe('Get User Profile Use Case', () => {
 
 
     const createdUser = await usersRepository.create({
-      nome: 'John Doe',
+      name: 'John Doe',
       email: 'johdoe@gmail.com',
       password_hash: await hash('123456', 6)
     })
@@ -47,7 +47,7 @@ describe('Get User Profile Use Case', () => {
 
 
 
-    expect(user.nome).toEqual('John Doe')
+    expect(user.name).toEqual('John Doe')
   })
 
 
