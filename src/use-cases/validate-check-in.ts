@@ -17,7 +17,7 @@ interface ValidateCheckInUseCaseResponse {
 }
 
 
-export class ValidateUseCase {
+export class ValidateCheckInUseCase {
   constructor(private checkInsRepository: CheckInsRepository) {
 
   }
