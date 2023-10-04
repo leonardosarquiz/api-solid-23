@@ -1,8 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { PrismaUsersRepository } from '../../repositories/prisma/prisma-users-repository'
-import { AuthenticateUseCase } from '../../use-cases/authenticate'
 import { InvalidCredentialError } from '../../use-cases/errors/invalid-credentials-error'
 import { makeAuthenticateUseCase } from '../../use-cases/factories/make-authenticate-use-case'
 
@@ -17,10 +15,20 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
 
   try {
     const authenticateUseCase = makeAuthenticateUseCase()
-    await authenticateUseCase.execute({
+    const { user } = await authenticateUseCase.execute({
 
       email,
       password
+    })
+
+
+    const token = await reply.jwtSign({}, {
+      sign: {
+        sub: user.id
+      }
+    })
+    return reply.status(200).send({
+      token
     })
   } catch (err) {
     if (err instanceof InvalidCredentialError) {
@@ -32,5 +40,5 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
 
 
 
-  return reply.status(200).send()
+
 }
