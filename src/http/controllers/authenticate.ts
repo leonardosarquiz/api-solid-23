@@ -27,9 +27,11 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
         sub: user.id
       }
     })
+
     return reply.status(200).send({
       token
     })
+
   } catch (err) {
     if (err instanceof InvalidCredentialError) {
       reply.status(400).send({ message: err.message })
@@ -37,8 +39,6 @@ export async function authenticate(request: FastifyRequest, reply: FastifyReply)
 
     throw err
   }
-
-
 
 
 }

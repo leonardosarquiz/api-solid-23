@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { error } from 'console'
+
 import 'dotenv/config'
 import { z } from 'zod'
 
