@@ -2,7 +2,7 @@
 import { expect, describe, it, beforeEach, vi, afterEach } from 'vitest'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 
-import { ValidateUseCase } from './validate-check-in'
+import { ValidateCheckInUseCase } from './validate-check-in'
 import { ResourceNotFounError } from './errors/resource-not-found-error'
 
 
@@ -16,13 +16,13 @@ describe('Validate Check-in Use Case', () => {
 
   let checkInsRepository: InMemoryCheckInsRepository
 
-  let sut: ValidateUseCase
+  let sut: ValidateCheckInUseCase
 
   beforeEach(async () => {
 
     checkInsRepository = new InMemoryCheckInsRepository()
 
-    sut = new ValidateUseCase(checkInsRepository)
+    sut = new ValidateCheckInUseCase(checkInsRepository)
 
 
 
